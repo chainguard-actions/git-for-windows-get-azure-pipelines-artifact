@@ -8,6 +8,8 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v0.1.0 | [`v0.1.0`](https://github.com/chainguard-actions/git-for-windows-get-azure-pipelines-artifact/tree/v0.1.0) | [`3764b13`](https://github.com/git-for-windows/get-azure-pipelines-artifact/commit/3764b1371f89e75b31e1796aa5b45515ca705e1e) |
+| v0.3.0 | [`v0.3.0`](https://github.com/chainguard-actions/git-for-windows-get-azure-pipelines-artifact/tree/v0.3.0) | [`fc8fbb6`](https://github.com/git-for-windows/get-azure-pipelines-artifact/commit/fc8fbb6661a844498f1518ab1c43f0e870173265) |
 | v0.3.1 | [`v0.3.1`](https://github.com/chainguard-actions/git-for-windows-get-azure-pipelines-artifact/tree/v0.3.1) | [`2e424b9`](https://github.com/git-for-windows/get-azure-pipelines-artifact/commit/2e424b98e1251b725d6064c5f1a9f854a33e5b88) |
 
 ## Privacy
