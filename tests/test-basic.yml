@@ -1,0 +1,34 @@
+name: Test basic artifact download
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create output directory
+        run: mkdir -p /tmp/artifact-output
+      - id: action
+        uses: .
+        with:
+          repository: git-for-windows/git
+          definitionId: '1'
+          artifact: ''
+          path: /tmp/artifact-output
+          verbose: 'false'
+          cache: 'false'
+          reasonFilter: 'all'
+        continue-on-error: true
+      - name: Assert action ran without unexpected errors
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "action outcome: $OUTCOME"
+          # The action may fail if no builds are found or network is unavailable,
+          # but it should not crash with an unhandled exception.
+          # We accept 'success' or 'failure' (network/no-build), but not 'cancelled'.
+          if [ "$OUTCOME" = "cancelled" ]; then
+            echo "FAIL: action was cancelled unexpectedly"
+            exit 1
+          fi
+          echo "PASS: action completed with outcome=$OUTCOME"

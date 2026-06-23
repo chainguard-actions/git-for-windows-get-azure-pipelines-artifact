@@ -1,0 +1,28 @@
+name: Test missing required inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify action fails when required inputs are missing
+        id: action
+        uses: .
+        with:
+          repository: 'nonexistent-org/nonexistent-repo'
+          definitionId: '999999999'
+          cache: 'false'
+          verbose: 'false'
+        continue-on-error: true
+      - name: Assert action failed due to invalid inputs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "action outcome: $OUTCOME"
+          # With a nonexistent repo/pipeline, the action should fail (not succeed)
+          if [ "$OUTCOME" = "success" ]; then
+            echo "FAIL: expected action to fail with invalid repository/definitionId"
+            exit 1
+          fi
+          echo "PASS: action correctly failed with invalid inputs (outcome=$OUTCOME)"
