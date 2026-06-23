@@ -1,0 +1,38 @@
+name: 'Download an artifact from an Azure Pipeline'
+description: 'Download an artifact from an Azure Pipeline'
+author: 'Johannes Schindelin'
+branding:
+  icon: fast-forward
+  color: blue
+inputs:
+  repository:
+    required: true
+    description: 'The repository in which the Azure Pipeline lives'
+  definitionId:
+    required: true
+    description: 'The identifier of the Azure Pipeline'
+  artifact:
+    required: false
+    description: 'The name of the Azure Pipeline artifact'
+  stripPrefix:
+    required: false
+    description: "Strip this prefix from the artifact files' paths; Defaults to '<artifact>/'"
+  path:
+    required: false
+    description: 'Where to write the artifact file(s)'
+  verbose:
+    required: false
+    description: 'Whether to log files as they are extracted'
+    default: '250'
+  cache:
+    required: false
+    description: 'Use @actions/cache to accelerate this Action'
+    default: 'true'
+  reasonFilter:
+    required: false
+    description: 'Filter results by the reason for the build; Defaults to "all"'
+    default: 'all'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+  pre: chainguard-phonehome.js
