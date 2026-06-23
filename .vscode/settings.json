@@ -1,0 +1,18 @@
+{
+    "cSpell.ignoreRegExpList": [
+        "INPUT_DEFINITIONID",
+        "arrowParens",
+        "vstfs://.*"
+    ],
+    "cSpell.words": [
+        "Backoff",
+        "artifactsize",
+        "autodrain",
+        "dpkg",
+        "localpath",
+        "refname",
+        "unzipper",
+        "vercel"
+    ],
+    "git.ignoreLimitWarning": true
+}
