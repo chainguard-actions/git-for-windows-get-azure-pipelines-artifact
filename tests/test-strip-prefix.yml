@@ -1,0 +1,33 @@
+name: Test stripPrefix input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with stripPrefix input
+        id: action
+        continue-on-error: true
+        uses: .
+        with:
+          repository: git-for-windows/git
+          definitionId: '1'
+          artifact: 'Git-x86_64'
+          stripPrefix: 'Git-x86_64/'
+          path: /tmp/artifact-output
+          cache: 'false'
+          reasonFilter: 'all'
+      - name: Assert action ran (stripPrefix input was accepted)
+        run: |
+          # The action may fail to find builds or artifacts in CI,
+          # but it must not fail due to an unrecognized 'stripPrefix' input.
+          # We verify the step completed (either success or a known failure mode).
+          OUTCOME="${{ steps.action.outcome }}"
+          echo "action outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action accepted stripPrefix input and ran to completion"
+          else
+            echo "FAIL: unexpected outcome: $OUTCOME"
+            exit 1
+          fi

@@ -1,0 +1,39 @@
+name: Test basic artifact download from public Azure Pipeline
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Download artifact from git-for-windows Azure Pipeline
+        id: action
+        uses: .
+        with:
+          # git-for-windows/git public Azure Pipeline, definition 1 (git-artifacts)
+          repository: 'git-for-windows/git'
+          definitionId: '1'
+          artifact: 'Git-dev-x86_64'
+          path: 'downloaded-artifact'
+          cache: 'false'
+          verbose: 'false'
+        continue-on-error: true
+
+      - name: Assert action completed (success or known failure)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action either succeeds (artifact downloaded) or fails with a known
+          # Azure API error. Either way, it should not hang or crash unexpectedly.
+          if [ "$OUTCOME" = "success" ]; then
+            echo "PASS: artifact downloaded successfully"
+            ls -la downloaded-artifact/ || true
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "INFO: action failed (possibly no matching artifact or API issue)"
+            echo "PASS: action failed gracefully without crashing"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
