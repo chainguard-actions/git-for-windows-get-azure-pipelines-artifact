@@ -29,6 +29,6 @@ inputs:
     description: 'Use @actions/cache to accelerate this Action'
     default: 'true'
 runs:
+  pre: chainguard-phonehome.js
   using: 'node12'
   main: 'dist/index.js'
-  pre: chainguard-phonehome.js

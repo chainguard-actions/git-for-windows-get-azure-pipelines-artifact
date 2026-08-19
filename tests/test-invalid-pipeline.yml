@@ -1,0 +1,30 @@
+name: Test invalid pipeline (error handling)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run action with non-existent pipeline (expect failure)
+        id: action
+        uses: .
+        with:
+          repository: this-org-does-not-exist/this-repo-does-not-exist
+          definitionId: '99999999'
+          artifact: nonexistent-artifact
+          path: /tmp/artifact-output
+          cache: 'false'
+        continue-on-error: true
+
+      - name: Assert action failed as expected
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected action to fail with invalid pipeline, but outcome was '$OUTCOME'"
+            exit 1
+          fi
+          echo "PASS: action correctly failed for non-existent pipeline"
